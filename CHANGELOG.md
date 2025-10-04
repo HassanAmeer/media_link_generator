@@ -6,3 +6,8 @@
 
 * added can generate token and upload file securly and  delete file by getted link
 
+
+## 0.0.3
+
+* added set token seperatly
+

@@ -1,7 +1,9 @@
 # Media Link Generator
 ### free to use 
+Media link storage
 
-A Flutter package for uploading, managing, and generating secure links for media files. This package provides a Firebase alternative for file storage with encryption support.
+A Flutter package for uploading, managing, and generating secure links for media files. This package provides a Firebase storage alternative for file storage with encryption support.
+
 
 ## Features
 
@@ -46,7 +48,7 @@ dependencies:
 
 
 # Generate Token one time  
-### initilized in main function or by others
+### initilized in main function or by others methods
 ```dart
 import 'dart:io';
 
@@ -55,11 +57,16 @@ import 'package:media_link_generator/media_link_generator.dart';
 
 void main() {
 
-      // Generate Token One Time Only
-      var result = await MediaLink().generateAndSetToken(
-                         "yourEmail@gmail.com", shouldPrint: true
-                   );
-      ebugPrint(result.toString());
+      // 1. Generate Directly Token 
+      //  var token = await MediaLink().generateAndSetToken(
+      //               "yourEmail@gmail.com", shouldPrint: true
+      //               );
+      // ebugPrint(token.toString()); // 37160f2e00721d906831565829ae1de7
+      // MediaLink().setToken(token!);
+
+      // 2. or can get from website and set token
+      //// set token 
+      MediaLink().setToken("37160f2e00721d906831565829ae1de7");
 
       runApp(MaterialApp(home: HomePage()));
 }
@@ -72,17 +79,18 @@ void main() {
           ElevatedButton(
             onPressed: () async {
               var getLink = await MediaLink().uploadFile(
-                 File("filePath"),
-                folderName: "items",
-                isSecret: false, // fully secured file only can see by generated link and file can not be opend without this generate link
-                fromDeviceName: "iphone 16 pro",
-                shouldPrint: true,
-                onUploadProgress: (uploadingPercentage) {
-                  debugPrint(uploadingPercentage.toString());
-                },
-              );
+                        File("filePath"),
+                        folderName: "items",
+                        isSecret: false, // fully secured file only can see by generated link and file can not be opend without this generate link
+                        fromDeviceName: "iphone 16 pro",
+                        shouldPrint: true,
+                        onUploadProgress: (uploadingPercentage) {
+                          debugPrint(uploadingPercentage.toString());
+                        },
+                  );
 
               debugPrint(getLink!.toJson().toString());
+              // https://filelink.com/link/v.php?t=1759519999&tk=37160f2e00721d906831565829ae1de7"
             },
             child: Text("Upload File with encyption"),
           ),
@@ -96,14 +104,12 @@ void main() {
             ElevatedButton(
             onPressed: () async {
                 var result = await MediaLink().deleteFile(
-                "fileLink", shouldPrint: true
-                //// example like 
-                //// https://filelink.com/link/v.php?t=1759519999&tk=37160f2e00721d906831565829ae1de7
-                );
+                        "https://filelink.com/link/v.php?t=1759519999&tk=37160f2e00721d906831565829ae1de7", shouldPrint: true
+                    );
                 if(result){
-                  debugPrint("Deleted");
-                  }else{
-                  debugPrint("Not Deleted");
+                    debugPrint("Deleted");
+                    }else{
+                    debugPrint("Not Deleted");
                 }
               },
               child: Text("Delete File"),

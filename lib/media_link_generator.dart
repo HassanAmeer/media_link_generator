@@ -7,19 +7,19 @@ import 'package:flutter/material.dart';
 // Models for API responses
 
 class TokenResponse {
-  final String status;
+  final bool success;
   final String message;
   final String? token;
 
   TokenResponse({
-    required this.status,
+    required this.success,
     required this.message,
     this.token,
   });
 
   factory TokenResponse.fromJson(Map<String, dynamic> json) {
     return TokenResponse(
-      status: json['status'] as String,
+      success: json['success'] as bool,
       message: json['message'] as String,
       token: json['token'] as String?,
     );
@@ -70,19 +70,19 @@ Map<String, dynamic> toJson() {
 }
 
 class DeleteResponse {
-  final String status;
+  final bool success;
   final String message;
   final dynamic data;
 
   DeleteResponse({
-    required this.status,
+    required this.success,
     required this.message,
     this.data,
   });
 
   factory DeleteResponse.fromJson(Map<String, dynamic> json) {
     return DeleteResponse(
-      status: json['status'] as String,
+      success: json['success'] as bool,
       message: json['message'] as String,
       data: json['data'],
     );
@@ -103,34 +103,37 @@ class MediaLink {
         );
 
   // Generate and set token
-  Future<String?> generateAndSetToken(String email, {bool shouldPrint = false}) async {
+  Future<String?> generateTokenByEmail(String email, {bool shouldPrint = false}) async {
     try {
       final response = await _dio.post('gen_token.php', data: jsonEncode({'email': email}));
       if (response.statusCode == 200) {
         final data = TokenResponse.fromJson(response.data);
-        if (data.status == 'success' && data.token != null) {
+        if (data.success.toString() == 'true' && data.token != null) {
           _token = data.token;
           if (shouldPrint) debugPrint('Token generation success: true');
           return _token;
         }
       }
     } catch (e) {
-      if (shouldPrint) debugPrint('Error generating token: $e');
+      debugPrint(' ❌ Error generating token: $e');
     }
     if (shouldPrint) debugPrint('Token generation success: false');
     return null;
   }
 
   // Set token manually
+  @override
   void setToken(String token) {
+    this._token = token;
     _token = token;
+    debugPrint(' ✅ Token set: $_token');
   }
 
   // Get current token
   String? get token => _token;
 
   // Upload file with progress callback
-  Future<UploadFile?> uploadFile(
+  Future<UploadFile> uploadFile(
     File file, {
     String? folderName,
     String? fromDeviceName,
@@ -140,10 +143,10 @@ class MediaLink {
   }) async {
     try {
       if(token!.isEmpty){
-        debugPrint('Please Generate Token');
+        debugPrint(' ❌ Please set Token');
         return UploadFile(
           success: false,
-          message: "Please Generate Token");
+          message: "Please set Token");
       }
       FormData formData = FormData.fromMap({
         'token': token,
@@ -165,16 +168,20 @@ class MediaLink {
 
       if (response.statusCode == 200) {
         final data = UploadFile.fromJson(response.data);
-        if (data.success) {
+        if (data.success.toString() == 'true') {
           if (shouldPrint) debugPrint('Upload success: true');
           return data;
         }
       }
+      return   UploadFile(
+                  success: false,
+                  message: "statusCode ${response.statusCode}");
     } catch (e) {
-      if (shouldPrint) debugPrint('Error uploading file: $e');
+      debugPrint(' ❌ Error uploading file: $e');
+      return   UploadFile(
+                  success: false,
+                  message: "$e");
     }
-    if (shouldPrint) debugPrint('Upload success: false');
-    return null;
   }
 
   // Delete file by link
@@ -186,13 +193,13 @@ class MediaLink {
       );
       if (response.statusCode == 200) {
         final data = DeleteResponse.fromJson(response.data);
-        if (data.status == 'success') {
+        if (data.success .toString()== 'true') {
           if (shouldPrint) debugPrint('🗑️ Delete success: true');
           return true;
         }
       }
     } catch (e) {
-      if (shouldPrint) debugPrint('Error deleting file: $e');
+      debugPrint(' ❌ Error deleting file: $e');
     }
     if (shouldPrint) debugPrint('Delete success: false');
     return false;
