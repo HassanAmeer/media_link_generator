@@ -122,7 +122,7 @@ class MediaLink {
   }
 
   // Set token manually
-  @override
+  // @override
   void setToken(String token) {
     _token = token;
     _token = token;
