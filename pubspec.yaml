@@ -2,11 +2,11 @@ name: media_link_generator
 description: "Can upload any type of files and get generated link"
 version: 0.0.1
 
-homepage:  https://github.com/HassanAmeer/mediagetter_filemanager_flutter_package
+homepage:  https://github.com/HassanAmeer/media_link_generator
 # on home page github or google link
-documentation: https://github.com/HassanAmeer/mediagetter_filemanager_flutter_package
-repository: https://github.com/HassanAmeer/mediagetter_filemanager_flutter_package
-issue_tracker: https://github.com/HassanAmeer/mediagetter_filemanager_flutter_package/issues
+documentation: https://github.com/HassanAmeer/media_link_generator
+repository: https://github.com/HassanAmeer/media_link_generator
+issue_tracker: https://github.com/HassanAmeer/media_link_generator/issues
 
 
 
