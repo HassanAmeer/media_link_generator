@@ -45,8 +45,8 @@ dependencies:
 
 
 
-
-# initilized in main function or others
+# Generate Token one time  
+### initilized in main function or by others
 ```dart
 import 'dart:io';
 
