@@ -124,7 +124,7 @@ class MediaLink {
   // Set token manually
   @override
   void setToken(String token) {
-    this._token = token;
+    _token = token;
     _token = token;
     debugPrint(' ✅ Token set: $_token');
   }

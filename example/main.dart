@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
                 },
               );
 
-              debugPrint(getLink!.toJson().toString());
+              debugPrint(getLink.toJson().toString());
             },
             child: Text("Upload File with encyption"),
           ),
