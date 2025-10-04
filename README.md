@@ -13,8 +13,17 @@ A Flutter package for uploading, managing, and generating secure links for media
 - Debug and production mode support
 - Cross-platform compatibility
 - free to use
-## Installation
 
+
+## Documentaion
+<a href="https://thelocalrent.com/link/apidocuments.php" target="_blank">API Documentation</a>
+
+
+### Screenshots
+ <img src="https://github.com/HassanAmeer/mediagetter_filemanager_flutter_package/blob/main/screenshots/demo.png?raw=true" style="width:50%">
+ 
+
+## Installation
 Add this to your package's `pubspec.yaml` file:
 
 ```yaml
