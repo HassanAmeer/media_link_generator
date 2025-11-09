@@ -72,7 +72,7 @@ void main() {
 }
 ```
 
-# for upload 
+# for upload simple files 
 ```dart
            /////// 2 . Generate Link
           Text("Upload Media Files For Generate Link"),
@@ -97,10 +97,36 @@ void main() {
 
 ```
 
+# Upload File In Bytes 
+```dart
+          /////// 3 . Upload File Bytes & Generate Link
+          Text("Upload File Bytes For Generate Link"),
+          ElevatedButton(
+            onPressed: () async {
+              var getLink = await MediaLink().uploadFileByBytes(
+                await File("filePath").readAsBytes(),
+                folderName: "items",
+                isSecret:
+                    false, // fully secured file only can see by generated link and file can not be opend without this generate link
+                fromDeviceName: "iphone 16 pro",
+                shouldPrint: true,
+                onUploadProgress: (uploadingPercentage) {
+                  debugPrint(uploadingPercentage.toString());
+                },
+              );
+
+              debugPrint(getLink.toJson().toString());
+            },
+            child: Text("Upload File with encyption"),
+          ),
+
+
+```
+
 
 # for delete 
 ```dart
-            /////////// 3. Delete Token 
+            /////////// 4. Delete Token 
             ElevatedButton(
             onPressed: () async {
                 var result = await MediaLink().deleteFile(
