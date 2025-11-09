@@ -61,7 +61,7 @@ class HomePage extends StatelessWidget {
           Text("Upload File Bytes For Generate Link"),
           ElevatedButton(
             onPressed: () async {
-              var getLink = await MediaLink().uploadFileByBytes(
+              var getLink = await MediaLink().uploadFileInBytes(
                 await File("filePath").readAsBytes(),
                 folderName: "items",
                 isSecret:

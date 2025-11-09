@@ -180,7 +180,7 @@ class MediaLink {
   }
 
   // Upload file using Base64 encoded string (JSON body)
-  Future<UploadFile> uploadFileByBytes(
+  Future<UploadFile> uploadFileInBytes(
     List<int> fileBytes, {
     String? folderName,
     String? fromDeviceName,
