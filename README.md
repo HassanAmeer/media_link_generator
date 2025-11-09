@@ -78,7 +78,7 @@ void main() {
           Text("Upload Media Files For Generate Link"),
           ElevatedButton(
             onPressed: () async {
-              var getLink = await MediaLink().uploadFile(
+              var getLink = await MediaLink().uploadSimpleFile(
                         File("filePath"),
                         folderName: "items",
                         isSecret: false, // fully secured file only can see by generated link and file can not be opend without this generate link
