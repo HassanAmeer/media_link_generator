@@ -11,3 +11,7 @@
 
 * added set token seperatly
 
+## 0.0.4
+
+* now can upload file in byte code
+

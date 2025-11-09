@@ -11,11 +11,7 @@ class TokenResponse {
   final String message;
   final String? token;
 
-  TokenResponse({
-    required this.success,
-    required this.message,
-    this.token,
-  });
+  TokenResponse({required this.success, required this.message, this.token});
 
   factory TokenResponse.fromJson(Map<String, dynamic> json) {
     return TokenResponse(
@@ -56,7 +52,7 @@ class UploadFile {
       fileType: json['file_type'] as String,
     );
   }
-Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'success': success,
       'message': message,
@@ -74,11 +70,7 @@ class DeleteResponse {
   final String message;
   final dynamic data;
 
-  DeleteResponse({
-    required this.success,
-    required this.message,
-    this.data,
-  });
+  DeleteResponse({required this.success, required this.message, this.data});
 
   factory DeleteResponse.fromJson(Map<String, dynamic> json) {
     return DeleteResponse(
@@ -95,17 +87,23 @@ class MediaLink {
   String? _token;
 
   MediaLink()
-      : _dio = Dio(
-          BaseOptions(
-            baseUrl: 'https://thelocalrent.com/link/api/',
-            headers: {'Content-Type': 'application/json'},
-          ),
-        );
+    : _dio = Dio(
+        BaseOptions(
+          baseUrl: 'https://thelocalrent.com/link/api/',
+          headers: {'Content-Type': 'application/json'},
+        ),
+      );
 
   // Generate and set token
-  Future<String?> generateTokenByEmail(String email, {bool shouldPrint = false}) async {
+  Future<String?> generateTokenByEmail(
+    String email, {
+    bool shouldPrint = false,
+  }) async {
     try {
-      final response = await _dio.post('gen_token.php', data: jsonEncode({'email': email}));
+      final response = await _dio.post(
+        'gen_token.php',
+        data: jsonEncode({'email': email}),
+      );
       if (response.statusCode == 200) {
         final data = TokenResponse.fromJson(response.data);
         if (data.success.toString() == 'true' && data.token != null) {
@@ -133,7 +131,7 @@ class MediaLink {
   String? get token => _token;
 
   // Upload file with progress callback
-  Future<UploadFile> uploadFile(
+  Future<UploadFile> uploadSimpleFile(
     File file, {
     String? folderName,
     String? fromDeviceName,
@@ -142,11 +140,9 @@ class MediaLink {
     bool shouldPrint = false,
   }) async {
     try {
-      if(token!.isEmpty){
+      if (token!.isEmpty) {
         debugPrint(' ❌ Please set Token');
-        return UploadFile(
-          success: false,
-          message: "Please set Token");
+        return UploadFile(success: false, message: "Please set Token");
       }
       FormData formData = FormData.fromMap({
         'token': token,
@@ -173,14 +169,67 @@ class MediaLink {
           return data;
         }
       }
-      return   UploadFile(
-                  success: false,
-                  message: "statusCode ${response.statusCode}");
+      return UploadFile(
+        success: false,
+        message: "statusCode ${response.statusCode}",
+      );
     } catch (e) {
       debugPrint(' ❌ Error uploading file: $e');
-      return   UploadFile(
-                  success: false,
-                  message: "$e");
+      return UploadFile(success: false, message: "$e");
+    }
+  }
+
+  // Upload file using Base64 encoded string (JSON body)
+  Future<UploadFile> uploadFileByBytes(
+    List<int> fileBytes, {
+    String? folderName,
+    String? fromDeviceName,
+    bool isSecret = false,
+    Function(double)? onUploadProgress,
+    bool shouldPrint = false,
+  }) async {
+    try {
+      if (_token == null || _token!.isEmpty) {
+        debugPrint(' ❌ Please set Token');
+        return UploadFile(success: false, message: "Please set Token");
+      }
+      // final bytes = await file.readAsBytes();
+      final base64String = base64Encode(
+        fileBytes,
+      ); // ""iVBORw0KGgoAAAANSUhEUgAAAXQAAAKeCA......"
+
+      final body = {
+        "token": _token,
+        "folder_name": folderName ?? '',
+        "is_secret": isSecret ? "1" : "0",
+        "from_device_name": fromDeviceName ?? 'flutter',
+        "file_base64": base64String,
+      };
+
+      final response = await _dio.post(
+        'upload_base64.php',
+        data: jsonEncode(body),
+        onSendProgress: (int sent, int total) {
+          if (onUploadProgress != null) {
+            onUploadProgress(sent / total);
+          }
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = UploadFile.fromJson(response.data);
+        if (data.success) {
+          if (shouldPrint) debugPrint('Upload success: true');
+          return data;
+        }
+      }
+      return UploadFile(
+        success: false,
+        message: "statusCode ${response.statusCode}",
+      );
+    } catch (e) {
+      debugPrint(' ❌ Error uploading file: $e');
+      return UploadFile(success: false, message: "$e");
     }
   }
 
@@ -193,7 +242,7 @@ class MediaLink {
       );
       if (response.statusCode == 200) {
         final data = DeleteResponse.fromJson(response.data);
-        if (data.success .toString()== 'true') {
+        if (data.success.toString() == 'true') {
           if (shouldPrint) debugPrint('🗑️ Delete success: true');
           return true;
         }
