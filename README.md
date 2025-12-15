@@ -1,11 +1,17 @@
 # Media Link Generator 🚀
-
 **Free Cloud Storage for Flutter** - Upload any file and get instant shareable links.
 
 A Firebase Storage alternative with encryption support, chunked uploads for large files, and progress tracking.
 
+## please move to new package stable version -> livedb
+- 📚 Documentation & Access
+[**📖 API Documentation**](https://livedbs.web.app/api-docs) • [**🔑 Get API Key (Login)**](https://livedbs.web.app/)
+
 [![pub package](https://img.shields.io/pub/v/media_link_generator.svg)](https://pub.dev/packages/media_link_generator)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
+
 
 ## Features ✨
 
@@ -50,7 +56,7 @@ void main() {
 }
 ```
 
-> 📝 **Get your token**: Visit [Media Link Dashboard](https://link.thelocalrent.com/users/auth.html)
+> 📝 **Get your token**: Visit [Media Link Dashboard](https://livedbs.web.app)
 > Default password for new accounts: `12345678`
 
 ### 2. Upload a File
@@ -119,7 +125,7 @@ final result = await MediaLink().uploadBytes(
 
 ```dart
 final deleted = await MediaLink().deleteFile(
-  'https://link.thelocalrent.com/link/v?t=12345&tk=abc'
+  'https://livedbs.web.app/v?t=12345&tk=abc'
 );
 
 if (deleted) {
@@ -132,7 +138,7 @@ if (deleted) {
 ```dart
 // Custom configuration
 MediaLink(MediaLinkConfig(
-  baseUrl: 'https://link.thelocalrent.com/api',
+  baseUrl: 'https://livedbs.web.app/api',
   chunkSize: 1024 * 1024, // 1MB chunks
   enableLogging: true, // Debug logs
   connectTimeout: 30000,
@@ -182,7 +188,7 @@ All upload methods accept these parameters:
 UploadResponse(
   success: true,
   message: 'File uploaded successfully',
-  link: 'https://link.thelocalrent.com/link/v?t=123&tk=abc',
+  link: 'https://livedbs.web.app/v?t=123&tk=abc',
   isEncrypted: false,
   insertId: 12345,
   fileSizeKb: 1024,
@@ -291,12 +297,12 @@ class _UploadScreenState extends State<UploadScreen> {
 ```
 
 ## API Documentation
-
-📚 Full API documentation: [https://link.thelocalrent.com/api-docs](https://link.thelocalrent.com/api-docs)
+📚 Full API documentation: [https://livedbs.web.app/api-docs](https://livedbs.web.app/api-docs)
 
 ## View Your Files
+🗂️ Manage your uploaded files: [https://livedbs.web.app/](https://livedbs.web.app/)
 
-🗂️ Manage your uploaded files: [https://link.thelocalrent.com/users/auth.html](https://link.thelocalrent.com/users/auth.html)
+[**📖 API Documentation**](https://livedbs.web.app/api-docs) • [**🔑 Get API Key (Login)**](https://livedbs.web.app/)
 
 ## License
 

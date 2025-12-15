@@ -1,6 +1,6 @@
 name: media_link_generator
 description: "Upload any file type and get instant shareable links. Free cloud storage alternative to Firebase Storage with encryption support, chunked uploads for large files, and progress tracking."
-version: 1.0.0
+version: 1.0.1
 
 homepage: https://github.com/HassanAmeer/media_link_generator
 documentation: https://link.thelocalrent.com/api-docs
